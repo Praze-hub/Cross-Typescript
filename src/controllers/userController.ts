@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
-import { getAllUsers, createUser } from '../services/userService';
+import { getAllUsers, createUser, updateUser, deleteUser } from '../services/userService';
 import { error } from 'console';
+import { Id } from "../../convex/_generated/dataModel";
+
+
 
 export const getUsers = (req: Request, res: Response) => {
     try{
@@ -38,3 +41,38 @@ export const addUser = async (req: Request, res: Response) => {
 
 
 }
+
+
+export const editUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    if (!id) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const updated = await updateUser(id as Id<'users'>, updates);
+    res.json({ message: "User updated", updated });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
+export const removeUser = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    await deleteUser(id as Id<'users'>);
+    res.json({ message: "User deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+};
+

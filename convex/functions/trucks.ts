@@ -22,3 +22,24 @@ export const createTruck = mutation({
         return truckId;
     },
 });
+
+export const updateTruck = mutation({
+    args: {
+        id: v.id('trucks'),
+        plateNumber: v.optional(v.string()),
+        model: v.optional(v.string()),
+        mileage: v.optional(v.number()),
+        lastMaintenanceAt: v.optional(v.number()),
+    },
+    async handler(ctx, { id, ...updates}){
+        await ctx.db.patch(id, updates);
+        return id;
+    },
+});
+
+export const deleteTruck = mutation({
+    args: { id: v.id('trucks')},
+    async handler(ctx, { id }) {
+        await ctx.db.delete(id);
+    },
+});

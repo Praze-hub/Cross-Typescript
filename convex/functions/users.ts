@@ -73,3 +73,27 @@ export const createUserAndDriver = mutation({
     }
 })
 
+
+export const updateUser = mutation({
+  args: {
+    id: v.id("users"),
+    name: v.optional(v.string()),
+    email: v.optional(v.string()),
+    role: v.optional(
+      v.union(v.literal("admin"), v.literal("manager"), v.literal("driver"))
+    ),
+  },
+  async handler(ctx, { id, ...updates }) {
+    await ctx.db.patch(id, updates);
+    return id;
+  },
+});
+
+export const deleteUser = mutation({
+  args: { id: v.id("users") },
+  async handler(ctx, { id }) {
+    await ctx.db.delete(id);
+    return id;
+  },
+});
+

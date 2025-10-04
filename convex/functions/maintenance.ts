@@ -44,3 +44,23 @@ export const startMaintenance = mutation({
   
     },
 });
+
+export const updateMaintenance = mutation({
+  args: {
+    id: v.id("maintenance"),
+    done: v.optional(v.boolean()),
+    notes: v.optional(v.string()),
+  },
+  async handler(ctx, { id, ...updates }) {
+    await ctx.db.patch(id, updates);
+    return id;
+  },
+});
+
+export const deleteMaintenance = mutation({
+  args: { id: v.id("maintenance") },
+  async handler(ctx, { id }) {
+    await ctx.db.delete(id);
+    return id;
+  },
+});

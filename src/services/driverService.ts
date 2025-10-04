@@ -30,3 +30,20 @@ export const createDriver = async (
     })
   );
 };
+
+export const updateDriver = async (
+  id: Id<"drivers">,
+  updates: {
+    name?: string;
+    licenseNumber?: string;
+  }
+) => {
+  return await convex.mutation(
+    api.functions.drivers.updateDriver,
+    omitUndefined({ id, ...updates })
+  );
+};
+
+export const deleteDriver = async (id: Id<"drivers">) => {
+  return await convex.mutation(api.functions.drivers.deleteDriver, { id });
+};

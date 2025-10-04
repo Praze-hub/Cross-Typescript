@@ -27,3 +27,22 @@ export const createTasks = async (
     })
 );
 };
+
+export const updateTask = async (
+  id: Id<'tasks'>,
+  updates: {
+    title?: string;
+    description?: string;
+    status?: "pending" | "in_progress" | "done";
+    dueAt?: number;
+  }
+) => {
+  return await convex.mutation(api.functions.tasks.updateTask, {
+    id,
+    ...updates,
+  });
+};
+
+export const deleteTask = async (id: Id<'tasks'>) => {
+  return await convex.mutation(api.functions.tasks.deleteTask, { id });
+};

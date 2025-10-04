@@ -23,3 +23,25 @@ export const createDriver = mutation({
         return driverId;
     },
 });
+
+export const updateDriver = mutation({
+
+    args: {
+        id: v.id('drivers'),
+        name: v.optional(v.string()),
+        phone: v.optional(v.string()),
+        email: v.optional(v.string()),
+        licenseNumber: v.optional(v.string()),
+    },
+    async handler(ctx, { id, ...updates }){
+        await ctx.db.patch(id, updates);
+    },
+});
+
+export const deleteDriver = mutation({
+    args: { id: v.id('drivers')},
+    async handler(ctx, { id} ){
+        await ctx.db.delete(id);
+        return id;
+    },
+});

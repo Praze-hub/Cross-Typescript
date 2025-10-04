@@ -43,3 +43,25 @@ export const markAsSent = mutation({
         await ctx.db.patch(args.id, { status: 'sent', sentAt: Date.now() });
     },
 });
+
+export const updateNotification = mutation({
+  args: {
+    id: v.id("notifications"),
+    status: v.optional(
+      v.union(v.literal("pending"), v.literal("sent"), v.literal("failed"))
+    ),
+  },
+  async handler(ctx, { id, ...updates }) {
+    await ctx.db.patch(id, updates);
+    return id;
+  },
+});
+
+export const deleteNotification = mutation({
+  args: { id: v.id("notifications") },
+  async handler(ctx, { id }) {
+    await ctx.db.delete(id);
+    return id;
+  },
+});
+

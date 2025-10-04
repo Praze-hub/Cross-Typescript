@@ -21,3 +21,28 @@ export const scheduleMaintenance = async (
   })
 );
 };
+
+export const updateMaintenance = async (
+  id: Id<"maintenance">,
+  updates: {
+    scheduledAt?: number;
+    done?: boolean;
+    notes?: string;
+  }
+) => {
+  return await convex.mutation(
+    api.functions.maintenance.updateMaintenance,
+    omitUndefined({
+      id,
+      ...updates,
+    })
+  );
+};
+
+export const deleteMaintenance = async (id: Id<"maintenance">) => {
+  return await convex.mutation(api.functions.maintenance.deleteMaintenance, {
+    id,
+  });
+};
+
+

@@ -13,3 +13,19 @@ export const sendNotification = async (notificationId: Id<'notifications'>) => {
     notificationId,
   });
 };
+
+export const updateNotification = async (
+  id: Id<"notifications">,
+  updates: { status?: "pending" | "sent" | "failed" }
+) => {
+  return await convex.mutation(api.functions.notifications.updateNotification, {
+    id,
+    ...updates,
+  });
+};
+
+export const deleteNotification = async (id: Id<"notifications">) => {
+  return await convex.mutation(api.functions.notifications.deleteNotification, {
+    id,
+  });
+};

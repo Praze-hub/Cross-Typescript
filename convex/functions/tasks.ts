@@ -37,3 +37,27 @@ export const createTasks = mutation({
     return taskId;
   },
 });
+
+export const updateTask = mutation({
+    args: {
+        id: v.id('tasks'),
+        title: v.optional(v.string()),
+        description: v.optional(v.string()),
+        status: v.optional(
+            v.union(v.literal('pending'), v.literal('in_progress'), v.literal('done'))
+        ),
+        dueAt: v.optional(v.number()),
+    },
+    async handler(ctx, {id, ...updates }){
+        await ctx.db.patch(id, updates);
+        return id;
+    },
+});
+
+export const deleteTask = mutation({
+    args: { id: v.id('tasks')},
+    async handler(ctx, { id }) {
+        await ctx.db.delete(id);
+        return id;
+    },
+});
