@@ -10,8 +10,11 @@ export const getAll = query({
 });
 
 export const getUserWithDriver = query({
-    args: { userId: v.id("users")},
+    args: { userId: v.optional(v.id("users"))},
     handler: async (ctx, args) => {
+        if (!args.userId) {
+        return { error: "No userId provided" };
+        }
         const user = await ctx.db.get(args.userId);
         if (!user) return null;
 
@@ -83,9 +86,24 @@ export const updateUser = mutation({
       v.union(v.literal("admin"), v.literal("manager"), v.literal("driver"))
     ),
   },
-  async handler(ctx, { id, ...updates }) {
+  async handler(ctx, args) {
+    const {id, name, email, role} = args;
+
+    const updates: Partial<{
+    name: string;
+    email: string;
+    role: "admin" | "manager" | "driver";
+  }> = {};
+  
+    if (name) updates.name = name;
+    if (email) updates.email = email;
+    if (role) updates.role = role;
+
     await ctx.db.patch(id, updates);
-    return id;
+    
+    const updatedUser = await ctx.db.get(id);
+
+    return updatedUser;
   },
 });
 
