@@ -20,7 +20,12 @@ export const createDriver = mutation({
         const driverId = await ctx.db.insert('drivers', {
             ...args,
         });
-        return driverId;
+
+        const newDriver = await ctx.db.get(driverId)
+        return {
+            message: "Driver succesfully created",
+            driver: newDriver,
+        };
     },
 });
 

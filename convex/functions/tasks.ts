@@ -34,7 +34,10 @@ export const createTasks = mutation({
       status: "pending",
       sentAt: Date.now(),
     });
-    return taskId;
+    return {
+     message: "Task successfully created",
+     task: taskId,
+    };
   },
 });
 

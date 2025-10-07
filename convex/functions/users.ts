@@ -32,7 +32,9 @@ export const getUserWithDriver = query({
 
 export const createUser = mutation({
     args: {
-        name: v.string(), email: v.string(), role: v.union(
+        name: v.string(),
+        email: v.string(), 
+        role: v.union(
             v.literal("admin"),
             v.literal("manager"),
             v.literal("driver")
@@ -45,7 +47,12 @@ export const createUser = mutation({
             role: args.role,
             createdAt: Date.now(),
         });
-        return userId;
+
+        const newUser = await ctx.db.get(userId);
+        return {
+            message: " User created successfully",
+            user: newUser,
+        };
     },
 });
 

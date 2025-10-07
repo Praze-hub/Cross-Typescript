@@ -19,7 +19,12 @@ export const createTruck = mutation({
         const truckId = await ctx.db.insert('trucks', {
             ...args,
         });
-        return truckId;
+        const newTruck = await ctx.db.get(truckId);
+
+        return{
+            message: "Truck created successfully",
+            truck: newTruck,
+        };
     },
 });
 

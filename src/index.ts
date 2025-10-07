@@ -6,12 +6,17 @@ import taskRoutes from "./routes/taskRoutes";
 import maintenanceRoutes from "./routes/maintenanceRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import { logger } from './middlewares/logger'
+import { setupSwagger } from './swagger';
+
 
 
 const app: Application = express()
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+
+setupSwagger(app);
+
 app.use('/api', userRoutes);
 app.use("/api", driverRoutes);
 app.use("/api", truckRoutes);
