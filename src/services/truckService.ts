@@ -8,7 +8,7 @@ const convex = new ConvexHttpClient("http://localhost:3210");
 
 
 export const getAllTrucks = async () => {
-    return await convex.query(api.functions.trucks.getAll, {});
+    return await convex.query(api.functions.trucks.getAllTheTrucks, {});
 
 };
 

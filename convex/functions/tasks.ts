@@ -1,7 +1,7 @@
 import { query, mutation} from '../_generated/server'
 import { v } from 'convex/values'
 
-export const getAll = query({
+export const getAllTheTasks = query({
     args: {},
     handler: async (ctx) => {
         return await ctx.db.query('tasks').collect();
@@ -48,9 +48,25 @@ export const updateTask = mutation({
         ),
         dueAt: v.optional(v.number()),
     },
-    async handler(ctx, {id, ...updates }){
+    async handler(ctx, args){
+
+        const {id, title, description, status} = args;
+
+        const updates: Partial<{
+            title: string;
+            description: string;
+            status: "pending" | "in_progress" | "done";
+        }> = {};
+
+        if (title) updates.title = title;
+        if (description) updates.description = description;
+        if (status) updates.status = status;
+
         await ctx.db.patch(id, updates);
-        return id;
+
+        const updateTask = await ctx.db.get(id);
+
+        return updateTask;
     },
 });
 

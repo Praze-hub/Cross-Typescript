@@ -3,7 +3,7 @@ import { query, mutation, action } from '../_generated/server'
 import { v } from 'convex/values'
 import { api } from "../_generated/api";
 
-export const getAll = query({
+export const getAllTheMaintenance = query({
     args: {},
     handler: async (ctx) => {
         return await ctx.db.query('maintenance').collect();
@@ -21,14 +21,17 @@ export const scheduleMaintenance = mutation({
     truck: args.truck,
       scheduledAt: args.scheduledAt,
       createdAt: Date.now(),
-      done: false,
+      status: "scheduled",
       notes: args.notes,
     });
     //running schedule job
     await ctx.scheduler.runAt(args.scheduledAt, api.functions.maintenance.startMaintenance, {
         maintenanceId,
     });
-    return maintenanceId;
+    return {
+      messsage: "Maintenance successfully scheduled",
+      maintenanceId
+    };
   },
 });
 
@@ -39,10 +42,24 @@ export const startMaintenance = mutation({
         console.log(`Maintenance ${args.maintenanceId} is due!`);
 
         await ctx.db.patch(args.maintenanceId, {
-         done: true,
+         status: "in_progress",
     });
+    return {
+      message: "Maintenance successfully started",
+    };
   
     },
+});
+
+export const completeMaintenance = mutation({
+  args: { maintenanceId: v.id("maintenance")},
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.maintenanceId, {
+      status: "completed",
+      completedAt: Date.now(),
+    });
+    return { message: "Maintenance marked as completed"};
+  },
 });
 
 export const updateMaintenance = mutation({
@@ -51,9 +68,22 @@ export const updateMaintenance = mutation({
     done: v.optional(v.boolean()),
     notes: v.optional(v.string()),
   },
-  async handler(ctx, { id, ...updates }) {
+  async handler(ctx, args) {
+    const {id,done, notes} = args;
+
+    const updates: Partial<{
+      done: boolean;
+      notes: string;
+    }> = {};
+
+    if (done) updates.done = done;
+    if (notes) updates.notes = notes;
+
     await ctx.db.patch(id, updates);
-    return id;
+    
+    const updatedMaintenance = await ctx.db.get(id);
+
+    return updatedMaintenance;
   },
 });
 

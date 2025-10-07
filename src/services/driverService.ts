@@ -9,7 +9,7 @@ const convex = new ConvexHttpClient("http://localhost:3210");
 
 
 export const getAllDrivers = async () => {
-  return await convex.query(api.functions.drivers.getAll, {});
+  return await convex.query(api.functions.drivers.getAllDriver, {});
 };
 
 export const createDriver = async (

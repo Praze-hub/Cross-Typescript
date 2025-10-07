@@ -66,7 +66,12 @@ export default defineSchema({
         truck: v.id("trucks"),
         scheduledAt: v.number(),
         createdAt: v.number(),
-        done: v.boolean(),
+        completedAt: v.optional(v.number()),
+        status: v.optional(v.union(
+            v.literal("scheduled"),
+            v.literal("in_progress"),
+            v.literal("completed")
+        )),
         notes: v.optional(v.string())
     }).index("by_truck", ["truck"]),
 

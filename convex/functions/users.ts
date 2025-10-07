@@ -2,7 +2,7 @@
 import { query, mutation } from "../_generated/server";
 import { v } from "convex/values";
 
-export const getAll = query({
+export const getAllTheUsers = query({
     args: {},
     async handler(ctx) {
         return await ctx.db.query("users").collect();
@@ -94,7 +94,7 @@ export const updateUser = mutation({
     email: string;
     role: "admin" | "manager" | "driver";
   }> = {};
-  
+
     if (name) updates.name = name;
     if (email) updates.email = email;
     if (role) updates.role = role;

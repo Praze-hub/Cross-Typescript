@@ -1,7 +1,7 @@
 import { query, mutation } from '../_generated/server';
 import { v } from 'convex/values';
 
-export const getAll = query({
+export const getAllDriver = query({
     args: {},
     handler: async (ctx) =>{
         return await ctx.db.query('drivers').collect();
@@ -33,8 +33,26 @@ export const updateDriver = mutation({
         email: v.optional(v.string()),
         licenseNumber: v.optional(v.string()),
     },
-    async handler(ctx, { id, ...updates }){
+    async handler(ctx, args){
+        const {id, name, phone, email, licenseNumber} = args;
+
+        const updates: Partial<{
+            name: string;
+            phone: string;
+            email: string;
+            licenseNumber: string;
+        }> = {};
+
+        if (name) updates.name = name;
+        if (phone) updates.phone = phone;
+        if (email) updates.email = email;
+        if (licenseNumber) updates.licenseNumber = licenseNumber;
+
         await ctx.db.patch(id, updates);
+
+        const updatedDriver = await ctx.db.get(id);
+
+        return updatedDriver;
     },
 });
 

@@ -7,7 +7,7 @@ import { Id } from "../../convex/_generated/dataModel";
 const convex = new ConvexHttpClient("http://localhost:3210");
 
 export const getAllTasks = async () => {
-    return await convex.query(api.functions.tasks.getAll, {});
+    return await convex.query(api.functions.tasks.getAllTheTasks, {});
 };
 
 export const createTasks = async (

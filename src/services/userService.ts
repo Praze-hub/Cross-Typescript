@@ -6,7 +6,7 @@ import { Id } from "../../convex/_generated/dataModel";
 const convex = new ConvexHttpClient('http://localhost:3210')
 
 export const getAllUsers = async () => {
-    return await convex.query(api.functions.users.getAll, {});
+    return await convex.query(api.functions.users.getAllTheUsers, {});
 };
 
 export const createUser = async (name: string, email: string, role: "admin" | "manager" | "driver") => {

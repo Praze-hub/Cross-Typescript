@@ -5,7 +5,7 @@ import { Id } from "../../convex/_generated/dataModel";
 const convex = new ConvexHttpClient("http://localhost:3210");
 
 export const getAllNotifications = async () => {
-  return await convex.query(api.functions.notifications.getAll, {});
+  return await convex.query(api.functions.notifications.getAllTheNotifications, {});
 };
 
 export const sendNotification = async (notificationId: Id<'notifications'>) => {

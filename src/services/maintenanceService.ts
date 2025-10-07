@@ -6,7 +6,7 @@ import { Id } from  "../../convex/_generated/dataModel";
 const convex = new ConvexHttpClient("http://localhost:3210");
 
 export const getAllMaintenance = async () => {
-  return await convex.query(api.functions.maintenance.getAll, {});
+  return await convex.query(api.functions.maintenance.getAllTheMaintenance, {});
 };
 
 export const scheduleMaintenance = async (
