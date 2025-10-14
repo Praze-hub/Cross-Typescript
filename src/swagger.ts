@@ -15,9 +15,10 @@ const options = {
         url: "http://localhost:3000/api",
         description: "Local server",
       },
+
     ],
   },
-  apis: ["./src/routes/*.ts"], // path to your route files
+  apis: ["./src/routes/*.ts"], // path to route files
 };
 
 const swaggerSpec = swaggerJsdoc(options);

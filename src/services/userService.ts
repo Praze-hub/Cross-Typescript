@@ -3,7 +3,7 @@ import  { api }  from '../../convex/_generated/api';
 import { Id } from "../../convex/_generated/dataModel"; 
 
 
-const convex = new ConvexHttpClient('http://localhost:3210')
+const convex = new ConvexHttpClient('https://confident-dove-122.convex.cloud')
 
 export const getAllUsers = async () => {
     return await convex.query(api.functions.users.getAllTheUsers, {});

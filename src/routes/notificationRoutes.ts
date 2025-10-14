@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { ConvexHttpClient } from "convex/browser";
 import {
   getNotifications,
   triggerNotification,
@@ -7,6 +8,8 @@ import {
 } from "../controllers/notificationController";
 
 const router = Router();
+const convex = new ConvexHttpClient("https://confident-dove-122.convex.cloud");
+
 
 /**
  * @swagger

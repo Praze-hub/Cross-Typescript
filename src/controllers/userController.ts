@@ -4,7 +4,6 @@ import { error } from 'console';
 import { Id } from "../../convex/_generated/dataModel";
 
 
-
 export const getUsers = (req: Request, res: Response) => {
     try{
         const users = getAllUsers();
@@ -30,17 +29,20 @@ export const addUser = async (req: Request, res: Response) => {
         if (!name || !email || !role ){
             return res.status(400).json({ error: "Name and email are required"});
         }
-        await createUser(name, email, role);
-        res.status(201).json({ message: "User created successfully" });
+        // await createUser(name, email, role);
+        // res.status(201).json({ message: "User created successfully" });
+        const newUser = await createUser(name, email, role);
+
+        res.status(201).json({
+          message: "User created successfully",
+          user: newUser,
+        });
 
     } catch (err){
         console.error(err);
-        res.status(500).json({ error: "Server error "})
+        res.status(500).json({ error: "Server error "});
     }
-  
-
-
-}
+};
 
 
 export const editUser = async (req: Request, res: Response) => {

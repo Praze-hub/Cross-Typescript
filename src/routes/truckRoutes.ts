@@ -1,7 +1,10 @@
 import { Router } from "express";
+import { ConvexHttpClient } from "convex/browser";
 import { getTrucks, addTruck, editTruck, removeTruck } from "../controllers/truckController";
 
 const router = Router();
+const convex = new ConvexHttpClient("https://confident-dove-122.convex.cloud");
+
 
 /**
  * @swagger

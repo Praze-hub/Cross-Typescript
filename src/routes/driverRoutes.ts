@@ -1,8 +1,17 @@
+// driverRoutes.ts
+import { Router } from "express";
+import { ConvexHttpClient } from "convex/browser";
+import { getDrivers, addDriver, editDriver, removeDriver } from "../controllers/driverController";
+
+const router = Router();
+const convex = new ConvexHttpClient("https://confident-dove-122.convex.cloud");
+
+
 /**
  * @swagger
  * tags:
  *   name: Drivers
- *   description: Endpoints for managing driver information
+ *   description: Endpoints for managing driver information and profiles
  */
 
 /**
@@ -11,10 +20,10 @@
  *   get:
  *     summary: Get all drivers
  *     tags: [Drivers]
- *     description: Retrieve all registered drivers in the system.
+ *     description: Retrieve a list of all registered drivers in the system.
  *     responses:
  *       200:
- *         description: List of all drivers retrieved successfully.
+ *         description: A list of all drivers retrieved successfully.
  *         content:
  *           application/json:
  *             schema:
@@ -30,23 +39,20 @@
  *                     description: Full name of the driver
  *                   phone:
  *                     type: string
- *                     description: Contact phone number
+ *                     description: Contact phone number of the driver
  *                   email:
  *                     type: string
- *                     description: Driver's email address
+ *                     description: Driver’s email address
  *                   licenseNumber:
  *                     type: string
  *                     description: Driver’s license number
  *                   userId:
  *                     type: string
- *                     description: ID of the user associated with the driver
- *                   createdAt:
- *                     type: string
- *                     format: date-time
- *                     description: Date when the driver was added
+ *                     description: ID of the user who registered the driver
  *       500:
  *         description: Server error while retrieving drivers
  */
+router.get("/drivers", getDrivers);
 
 /**
  * @swagger
@@ -71,16 +77,16 @@
  *                 description: Full name of the driver
  *               phone:
  *                 type: string
- *                 description: Contact phone number
+ *                 description: Contact phone number of the driver
  *               email:
  *                 type: string
- *                 description: Driver's email address
+ *                 description: Driver’s email address
  *               licenseNumber:
  *                 type: string
  *                 description: Driver’s license number
  *               userId:
  *                 type: string
- *                 description: ID of the user associated with the driver
+ *                 description: ID of the user creating this driver record
  *     responses:
  *       201:
  *         description: Driver added successfully
@@ -89,21 +95,22 @@
  *       500:
  *         description: Server error while adding driver
  */
+router.post("/drivers", addDriver);
 
 /**
  * @swagger
  * /drivers/{driverId}:
  *   put:
- *     summary: Update driver information
+ *     summary: Update a driver’s information
  *     tags: [Drivers]
- *     description: Update an existing driver's details.
+ *     description: Edit or update the details of an existing driver.
  *     parameters:
  *       - in: path
  *         name: driverId
  *         required: true
  *         schema:
  *           type: string
- *         description: Unique ID of the driver
+ *         description: Unique ID of the driver to update
  *     requestBody:
  *       required: true
  *       content:
@@ -113,12 +120,16 @@
  *             properties:
  *               name:
  *                 type: string
+ *                 description: Updated full name of the driver
  *               phone:
  *                 type: string
+ *                 description: Updated contact phone number
  *               email:
  *                 type: string
+ *                 description: Updated email address
  *               licenseNumber:
  *                 type: string
+ *                 description: Updated driver’s license number
  *     responses:
  *       200:
  *         description: Driver updated successfully
@@ -127,6 +138,7 @@
  *       500:
  *         description: Server error while updating driver
  */
+router.put("/drivers/:driverId", editDriver);
 
 /**
  * @swagger
@@ -134,7 +146,7 @@
  *   delete:
  *     summary: Delete a driver
  *     tags: [Drivers]
- *     description: Remove a driver by ID.
+ *     description: Remove a driver from the system by their ID.
  *     parameters:
  *       - in: path
  *         name: driverId
@@ -150,3 +162,6 @@
  *       500:
  *         description: Server error while deleting driver
  */
+router.delete("/drivers/:driverId", removeDriver);
+
+export default router;
